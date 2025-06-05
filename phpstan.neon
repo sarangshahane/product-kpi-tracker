@@ -16,10 +16,10 @@ parameters:
 	scanFiles:
 	bootstrapFiles:
 		- %rootDir%/../../php-stubs/wordpress-stubs/wordpress-stubs.php
-		- tests/php/stubs/wpb-constants.php
-		- tests/php/stubs/wpb-stubs.php
+		- tests/php/stubs/pkt-constants.php
+		- tests/php/stubs/pkt-stubs.php
 	paths:
-		- wp-plugin-base.php
+		- product-kpi-tracker.php
 
 	excludePaths:
 		- node_modules

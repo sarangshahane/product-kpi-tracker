@@ -1,12 +1,12 @@
 {
-	"name": "wp-plugin-base",
-	"version": "0.0.1",
-	"description": "",
+	"name": "product-kpi-tracker",
+	"version": "1.0.0",
+	"description": "Track and analyze key performance indicators for your WooCommerce products",
 	"main": "index.js",
 	"scripts": {
 		"start": "wp-scripts start",
 		"build": "wp-scripts build",
-		"i18n": "grunt textdomain && wp i18n make-pot languages/wp-plugin-base.pot --domain=wp-plugin-base --debug",
+		"i18n": "grunt textdomain && wp i18n make-pot languages/product-kpi-tracker.pot --domain=product-kpi-tracker --debug",
 		"pretty": "prettier --check .",
 		"pretty:fix": "prettier --write .",
 		"lint-js": "wp-scripts lint-js",
@@ -27,16 +27,16 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/brainstormforce/wp-plugin-base.git"
+		"url": "git+https://github.com/your-company/product-kpi-tracker.git"
 	},
-	"author": "",
-	"license": "ISC",
+	"author": "Your Company Name",
+	"license": "GPL-2.0-or-later",
 	"bugs": {
-		"url": "https://github.com/brainstormforce/wp-plugin-base/issues"
+		"url": "https://github.com/your-company/product-kpi-tracker/issues"
 	},
-	"homepage": "https://github.com/brainstormforce/wp-plugin-base#readme",
+	"homepage": "https://github.com/your-company/product-kpi-tracker#readme",
 	"devDependencies": {
-		"@wordpress/scripts": "^21.0.1",
+		"@wordpress/scripts": "^30.18.0",
 		"grunt": "^1.4.1",
 		"grunt-cli": "^1.4.3",
 		"grunt-contrib-clean": "^2.0.0",

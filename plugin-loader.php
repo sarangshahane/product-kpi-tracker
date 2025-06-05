@@ -2,16 +2,16 @@
 /**
  * Plugin Loader.
  *
- * @package {{package}}
- * @since {{since}}
+ * @package ProductKPITracker
+ * @since 1.0.0
  */
 
-namespace WPB;
+namespace PKT;
 
 /**
  * Plugin_Loader
  *
- * @since X.X.X
+ * @since 1.0.0
  */
 class Plugin_Loader {
 
@@ -20,14 +20,14 @@ class Plugin_Loader {
 	 *
 	 * @access private
 	 * @var object Class Instance.
-	 * @since X.X.X
+	 * @since 1.0.0
 	 */
 	private static $instance;
 
 	/**
 	 * Initiator
 	 *
-	 * @since X.X.X
+	 * @since 1.0.0
 	 * @return object initialized object of class.
 	 */
 	public static function get_instance() {
@@ -57,7 +57,7 @@ class Plugin_Loader {
 			)
 		);
 
-		$file = WPB_DIR . $filename . '.php';
+		$file = PKT_DIR . $filename . '.php';
 
 		// if the file redable, include it.
 		if ( is_readable( $file ) ) {
@@ -68,7 +68,7 @@ class Plugin_Loader {
 	/**
 	 * Constructor
 	 *
-	 * @since X.X.X
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 
@@ -80,22 +80,22 @@ class Plugin_Loader {
 	/**
 	 * Load Plugin Text Domain.
 	 * This will load the translation textdomain depending on the file priorities.
-	 *      1. Global Languages /wp-content/languages/wp-plugin-base/ folder
-	 *      2. Local dorectory /wp-content/plugins/wp-plugin-base/languages/ folder
+	 *      1. Global Languages /wp-content/languages/product-kpi-tracker/ folder
+	 *      2. Local dorectory /wp-content/plugins/product-kpi-tracker/languages/ folder
 	 *
-	 * @since X.X.X
+	 * @since 1.0.0
 	 * @return void
 	 */
 	public function load_textdomain() {
 		// Default languages directory.
-		$lang_dir = WPB_DIR . 'languages/';
+		$lang_dir = PKT_DIR . 'languages/';
 
 		/**
 		 * Filters the languages directory path to use for plugin.
 		 *
 		 * @param string $lang_dir The languages directory path.
 		 */
-		$lang_dir = apply_filters( 'wpb_languages_directory', $lang_dir );
+		$lang_dir = apply_filters( 'pkt_languages_directory', $lang_dir );
 
 		// Traditional WordPress plugin locale filter.
 		global $wp_version;
@@ -113,22 +113,22 @@ class Plugin_Loader {
 		 * Uses get_user_locale()` in WordPress 4.7 or greater,
 		 * otherwise uses `get_locale()`.
 		 */
-		$locale = apply_filters( 'plugin_locale', $get_locale, 'wp-plugin-base' );
-		$mofile = sprintf( '%1$s-%2$s.mo', 'wp-plugin-base', $locale );
+		$locale = apply_filters( 'plugin_locale', $get_locale, 'product-kpi-tracker' );
+		$mofile = sprintf( '%1$s-%2$s.mo', 'product-kpi-tracker', $locale );
 
 		// Setup paths to current locale file.
 		$mofile_global = WP_LANG_DIR . '/plugins/' . $mofile;
 		$mofile_local  = $lang_dir . $mofile;
 
 		if ( file_exists( $mofile_global ) ) {
-			// Look in global /wp-content/languages/wp-plugin-base/ folder.
-			load_textdomain( 'wp-plugin-base', $mofile_global );
+			// Look in global /wp-content/languages/product-kpi-tracker/ folder.
+			load_textdomain( 'product-kpi-tracker', $mofile_global );
 		} elseif ( file_exists( $mofile_local ) ) {
-			// Look in local /wp-content/plugins/wp-plugin-base/languages/ folder.
-			load_textdomain( 'wp-plugin-base', $mofile_local );
+			// Look in local /wp-content/plugins/product-kpi-tracker/languages/ folder.
+			load_textdomain( 'product-kpi-tracker', $mofile_local );
 		} else {
 			// Load the default language files.
-			load_plugin_textdomain( 'wp-plugin-base', false, $lang_dir );
+			load_plugin_textdomain( 'product-kpi-tracker', false, $lang_dir );
 		}
 	}
 }

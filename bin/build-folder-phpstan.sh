@@ -23,7 +23,7 @@ warning () {
 }
 
 
-status "💃 Time to build WP Plugin Base plugin duplicate folder 🕺"
+status "💃 Time to build Product KPI Tracker plugin duplicate folder 🕺"
 
 if [ ! -d "artifact" ]; then
   mkdir "artifact"
@@ -38,6 +38,6 @@ fi
 cd ..
 
 # Copy files for zip.
-rsync -rc --exclude-from ".distignore" "./" "artifact/phpstan/wp-plugin-base"
+rsync -rc --exclude-from ".distignore" "./" "artifact/phpstan/product-kpi-tracker"
 
-success "Done. Your WP Plugin Base Folder is copied for creating stubs..! 🎉"
+success "Done. Your Product KPI Tracker Folder is copied for creating stubs..! 🎉"
