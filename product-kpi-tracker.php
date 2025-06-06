@@ -23,7 +23,7 @@ define( 'PKT_VER', '1.0.0' );
 require_once 'plugin-loader.php';
 
 // Include admin class if in admin area
-if ( is_admin() ) {
-    require_once PKT_DIR . 'includes/class-admin.php';
-    require_once PKT_DIR . 'includes/class-api.php';
-}
+// if ( is_admin() ) {
+//     require_once PKT_DIR . 'includes/class-admin.php';
+//     require_once PKT_DIR . 'includes/class-api.php';
+// }

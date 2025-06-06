@@ -48,6 +48,7 @@
 		"wp-prettier": "^2.6.2"
 	},
 	"dependencies": {
+		"@wordpress/api-fetch": "^7.25.0",
 		"chart.js": "^4.4.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",

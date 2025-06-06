@@ -8,6 +8,8 @@
 
 namespace PKT;
 
+use PKT\AdminCore\Api\ApiInit;
+
 /**
  * Plugin_Loader
  *
@@ -75,6 +77,9 @@ class Plugin_Loader {
 		spl_autoload_register( [ $this, 'autoload' ] );
 
 		add_action( 'plugins_loaded', [ $this, 'load_textdomain' ] );
+
+		$this->define_constants();
+		$this->setup_classes();
 	}
 
 	/**
@@ -130,6 +135,27 @@ class Plugin_Loader {
 			// Load the default language files.
 			load_plugin_textdomain( 'product-kpi-tracker', false, $lang_dir );
 		}
+	}
+
+	/**
+	 * Include required classes.
+	 */
+	public function define_constants() {
+		define( 'PKT_ADMIN_CORE_DIR', PKT_DIR . 'admin-core/' );
+		define( 'PKT_ADMIN_CORE_URL', PKT_URL . 'admin-core/' );
+	}
+
+	/**
+	 * Include required classes.
+	 */
+	public function setup_classes() {
+
+		// Load the classes.
+		require_once PKT_DIR . 'includes/class-kpi-helper.php';
+		require_once PKT_DIR . 'includes/class-admin.php';
+
+		/* Init API */
+		ApiInit::get_instance();
 	}
 }
 

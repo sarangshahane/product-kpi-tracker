@@ -10,7 +10,7 @@ import {
   PrintableReport,
   UserPreferences
 } from '../components';
-import { fetchDashboardData } from '../utils/api';
+import apiFetch from '@wordpress/api-fetch';
 import { formatCurrency, formatPercentage } from '../utils/formatters';
 
 /**
@@ -44,24 +44,57 @@ const Dashboard = () => {
     }
   });
 
+  // Helper function to calculate percentage change safely
+  const calculatePercentageChange = (current, previous) => {
+    if (!previous || previous === 0) return 0;
+    return ((current - previous) / previous) * 100;
+  };
+
   // Fetch dashboard data when period or comparison setting changes
   useEffect(() => {
-    const loadDashboardData = async () => {
+    let isActive = true;
+
+    const loadDashboardData = () => {
       setIsLoading(true);
       setError(null);
+
+      const ajaxData = new window.FormData();
+			ajaxData.append( 'period', period?? 'monthly' );
+			ajaxData.append( 'compare', showComparison?? '' );
+      ajaxData.append( 'start_date', dateRange?.startDate || '' );
+      ajaxData.append( 'end_date', dateRange?.endDate || '' );
       
-      try {
-        const data = await fetchDashboardData(period, showComparison, dateRange);
-        setDashboardData(data);
-      } catch (err) {
-        setError('Failed to load dashboard data. Please try again later.');
-        console.error('Dashboard data fetch error:', err);
-      } finally {
-        setIsLoading(false);
-      }
+
+      // const ajaxData = {
+      //   period,
+      //   compare: showComparison,
+      //   start_date: dateRange?.startDate || '',
+      //   end_date: dateRange?.endDate || '',
+      // };
+
+      apiFetch({
+        path: '/pkt/v1/admin/dashboard',
+        method: 'POST',
+        body: ajaxData,
+      }).then((data) => {
+        if (isActive) {
+          setDashboardData(data);
+          setIsLoading(false);
+        }
+      }).catch((err) => {
+        if (isActive) {
+          setError('Failed to load dashboard data. Please try again later.');
+          console.error('Dashboard data fetch error:', err);
+          setIsLoading(false);
+        }
+      });
     };
 
     loadDashboardData();
+
+    return () => {
+      isActive = false;
+    };
   }, [period, showComparison, dateRange]);
 
   // Handle period change
@@ -232,25 +265,25 @@ const Dashboard = () => {
           title="Net Revenue" 
           value={formatCurrency(stats.netRevenue)} 
           trend={prevStats ? (stats.netRevenue > prevStats.netRevenue ? 'positive' : 'negative') : 'neutral'}
-          trendText={prevStats ? `${Math.abs(((stats.netRevenue - prevStats.netRevenue) / prevStats.netRevenue * 100).toFixed(1))}% from previous period` : ''}
+          trendText={prevStats ? `${Math.abs(calculatePercentageChange(stats.netRevenue, prevStats.netRevenue)).toFixed(1)}% from previous period` : ''}
         />
         <StatCard 
           title="Average Order Value" 
           value={formatCurrency(stats.aov)} 
           trend={prevStats ? (stats.aov > prevStats.aov ? 'positive' : 'negative') : 'neutral'}
-          trendText={prevStats ? `${Math.abs(((stats.aov - prevStats.aov) / prevStats.aov * 100).toFixed(1))}% from previous period` : ''}
+          trendText={prevStats ? `${Math.abs(calculatePercentageChange(stats.aov, prevStats.aov)).toFixed(1)}% from previous period` : ''}
         />
         <StatCard 
           title="Average Churn Rate" 
           value={formatPercentage(stats.churnRate)} 
           trend={prevStats ? (stats.churnRate < prevStats.churnRate ? 'positive' : 'negative') : 'neutral'}
-          trendText={prevStats ? `${Math.abs(((stats.churnRate - prevStats.churnRate) / prevStats.churnRate * 100).toFixed(1))}% from previous period` : ''}
+          trendText={prevStats ? `${Math.abs(calculatePercentageChange(stats.churnRate, prevStats.churnRate)).toFixed(1)}% from previous period` : ''}
         />
         <StatCard 
           title="Average Refund Rate" 
           value={formatPercentage(stats.refundRate)} 
           trend={prevStats ? (stats.refundRate < prevStats.refundRate ? 'positive' : 'negative') : 'neutral'}
-          trendText={prevStats ? `${Math.abs(((stats.refundRate - prevStats.refundRate) / prevStats.refundRate * 100).toFixed(1))}% from previous period` : ''}
+          trendText={prevStats ? `${Math.abs(calculatePercentageChange(stats.refundRate, prevStats.refundRate)).toFixed(1)}% from previous period` : ''}
         />
       </div>
       
@@ -260,19 +293,19 @@ const Dashboard = () => {
           title="Monthly Recurring Revenue" 
           value={formatCurrency(stats.mrr)} 
           trend={prevStats ? (stats.mrr > prevStats.mrr ? 'positive' : 'negative') : 'neutral'}
-          trendText={prevStats ? `${Math.abs(((stats.mrr - prevStats.mrr) / prevStats.mrr * 100).toFixed(1))}% from previous period` : ''}
+          trendText={prevStats ? `${Math.abs(calculatePercentageChange(stats.mrr, prevStats.mrr)).toFixed(1)}% from previous period` : ''}
         />
         <StatCard 
           title="Average Revenue Per Subscription" 
           value={formatCurrency(stats.arps)} 
           trend={prevStats ? (stats.arps > prevStats.arps ? 'positive' : 'negative') : 'neutral'}
-          trendText={prevStats ? `${Math.abs(((stats.arps - prevStats.arps) / prevStats.arps * 100).toFixed(1))}% from previous period` : ''}
+          trendText={prevStats ? `${Math.abs(calculatePercentageChange(stats.arps, prevStats.arps)).toFixed(1)}% from previous period` : ''}
         />
         <StatCard 
           title="Cart Abandonment Rate" 
           value={formatPercentage(stats.abandonmentRate)} 
           trend={prevStats ? (stats.abandonmentRate < prevStats.abandonmentRate ? 'positive' : 'negative') : 'neutral'}
-          trendText={prevStats ? `${Math.abs(((stats.abandonmentRate - prevStats.abandonmentRate) / prevStats.abandonmentRate * 100).toFixed(1))}% from previous period` : ''}
+          trendText={prevStats ? `${Math.abs(calculatePercentageChange(stats.abandonmentRate, prevStats.abandonmentRate)).toFixed(1)}% from previous period` : ''}
         />
       </div>
       
