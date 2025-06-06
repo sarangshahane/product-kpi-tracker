@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body.toplevel_page_product-kpi-tracker #wpcontent{
+  padding: 0;
+}
+
 @layer components {
   /* Custom styles for Product KPI Tracker */
   .pkt-admin-container {
@@ -78,7 +82,7 @@
 
   /* Dashboard card styles */
   .pkt-stat-card {
-    @apply pkt-bg-white pkt-rounded-lg pkt-shadow pkt-p-4;
+    @apply pkt-bg-white pkt-rounded-lg pkt-shadow pkt-p-4 pkt-w-full;
   }
 
   .pkt-stat-value {

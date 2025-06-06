@@ -59,7 +59,7 @@ const Dashboard = () => {
     <div className="pkt-admin-container">
       <Title text="Dashboard Overview" />
       
-      <div className="pkt-grid pkt-grid-cols-1 pkt-md:grid-cols-3 pkt-gap-4 pkt-mb-8">
+      <div className="pkt-flex pkt-items-center pkt-gap-4 pkt-mb-8">
         <Card className="pkt-stat-card">
           <div className="pkt-stat-label">Total Sales</div>
           <div className="pkt-stat-value">{formatCurrency(stats.totalSales)}</div>

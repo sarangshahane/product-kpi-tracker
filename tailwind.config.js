@@ -3,6 +3,7 @@ module.exports = {
   content: [
     './admin-core/src/**/*.{js,jsx,ts,tsx}',
   ],
+  darkMode: 'class',
   theme: {
     extend: {},
   },
@@ -18,5 +19,6 @@ module.exports = {
     'pkt-trend-neutral',
     'pkt-nav-item',
     'pkt-nav-item-active',
+    'pkt-dark',
   ],
 }

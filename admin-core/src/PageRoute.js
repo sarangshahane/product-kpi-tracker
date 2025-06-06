@@ -29,14 +29,16 @@ function PageRoute() {
 
     return(
         <Router basename={basename}>
-            <div className="pkt-admin-wrapper">
+            <div className="pkt-flex pkt-flex-col pkt-min-h-screen">
                 <NavigationHeader />
-                <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/reports" element={<Reports />} />
-                    <Route path="/formulas" element={<Formulas />} />
-                    <Route path="/settings" element={<Settings />} />
-                </Routes>
+                <div className="pkt-container pkt-mx-auto pkt-px-4 pkt-py-6">
+                    <Routes>
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/reports" element={<Reports />} />
+                        <Route path="/formulas" element={<Formulas />} />
+                        <Route path="/settings" element={<Settings />} />
+                    </Routes>
+                </div>
             </div>
         </Router>
     )

@@ -156,9 +156,7 @@ class Admin {
 	 */
 	public function render_admin_page() {
 		?>
-		<div class="wrap">
-			<div id="product-kpi-tracker-admin"></div>
-		</div>
+		<div id="product-kpi-tracker--wrapper"></div>
 		<?php
 	}
 }
