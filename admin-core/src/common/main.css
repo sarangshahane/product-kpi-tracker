@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* Custom styles for Product KPI Tracker */
+  .pkt-admin-container {
+    @apply pkt-p-6 pkt-bg-white pkt-rounded-lg pkt-shadow;
+  }
+
+  .pkt-header {
+    @apply pkt-mb-6 pkt-pb-4 pkt-border-b pkt-border-gray-200;
+  }
+
+  .pkt-card {
+    @apply pkt-bg-white pkt-rounded-lg pkt-shadow pkt-p-4 pkt-mb-4;
+  }
+
+  .pkt-section-title {
+    @apply pkt-text-xl pkt-font-semibold pkt-mb-4 pkt-text-gray-800;
+  }
+
+  /* Navigation styles */
+  .pkt-nav {
+    @apply pkt-flex pkt-mb-6 pkt-border-b pkt-border-gray-200;
+  }
+
+  .pkt-nav-item {
+    @apply pkt-px-4 pkt-py-2 pkt-font-medium pkt-text-gray-600 hover:pkt-text-blue-600 pkt-border-b-2 pkt-border-transparent;
+  }
+
+  .pkt-nav-item-active {
+    @apply pkt-px-4 pkt-py-2 pkt-font-medium pkt-text-blue-600 pkt-border-b-2 pkt-border-blue-600;
+  }
+
+  /* Button styles */
+  .pkt-button {
+    @apply pkt-px-4 pkt-py-2 pkt-bg-blue-600 pkt-text-white pkt-rounded hover:pkt-bg-blue-700 pkt-transition-colors;
+  }
+
+  .pkt-button-secondary {
+    @apply pkt-px-4 pkt-py-2 pkt-bg-gray-200 pkt-text-gray-800 pkt-rounded hover:pkt-bg-gray-300 pkt-transition-colors;
+  }
+
+  /* Form styles */
+  .pkt-input {
+    @apply pkt-w-full pkt-px-3 pkt-py-2 pkt-border pkt-border-gray-300 pkt-rounded focus:pkt-outline-none focus:pkt-ring-2 focus:pkt-ring-blue-500;
+  }
+
+  .pkt-label {
+    @apply pkt-block pkt-mb-2 pkt-text-sm pkt-font-medium pkt-text-gray-700;
+  }
+
+  /* Table styles */
+  .pkt-table {
+    @apply pkt-min-w-full pkt-divide-y pkt-divide-gray-200;
+  }
+
+  .pkt-table-header {
+    @apply pkt-bg-gray-50;
+  }
+
+  .pkt-table-header-cell {
+    @apply pkt-px-6 pkt-py-3 pkt-text-left pkt-text-xs pkt-font-medium pkt-text-gray-500 pkt-uppercase pkt-tracking-wider;
+  }
+
+  .pkt-table-body {
+    @apply pkt-bg-white pkt-divide-y pkt-divide-gray-200;
+  }
+
+  .pkt-table-row {
+    @apply hover:pkt-bg-gray-50;
+  }
+
+  .pkt-table-cell {
+    @apply pkt-px-6 pkt-py-4 pkt-whitespace-nowrap pkt-text-sm pkt-text-gray-500;
+  }
+
+  /* Dashboard card styles */
+  .pkt-stat-card {
+    @apply pkt-bg-white pkt-rounded-lg pkt-shadow pkt-p-4;
+  }
+
+  .pkt-stat-value {
+    @apply pkt-text-2xl pkt-font-bold pkt-text-gray-800;
+  }
+
+  .pkt-stat-label {
+    @apply pkt-text-sm pkt-text-gray-500;
+  }
+
+  .pkt-trend-up {
+    @apply pkt-text-green-600;
+  }
+
+  .pkt-trend-down {
+    @apply pkt-text-red-600;
+  }
+}
