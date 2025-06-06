@@ -16,7 +16,7 @@ module.exports = {
 			'@Components': path.resolve( __dirname, 'admin-core/src/components/' ),
 			'@Fields': path.resolve( __dirname, 'admin-core/src/fields/' ),
 			'@Pages': path.resolve( __dirname, 'admin-core/src/pages/' ),
-			'@Utls': path.resolve( __dirname, 'admin-core/src/utils/' ),
+			'@Utils': path.resolve( __dirname, 'admin-core/src/utils/' ),
 		},
 	},
   output: {
