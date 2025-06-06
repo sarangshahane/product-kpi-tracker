@@ -21,6 +21,7 @@ define( 'PKT_URL', plugins_url( '/', PKT_FILE ) );
 define( 'PKT_VER', '1.0.0' );
 
 require_once 'plugin-loader.php';
+require_once PKT_DIR . 'admin-loader.php';
 
 // Include admin class if in admin area
 if ( is_admin() ) {
