@@ -10,7 +10,7 @@ import {
   PrintableReport,
   UserPreferences
 } from '../components';
-import { fetchDashboardData } from '../utils/api';
+import apiFetch from '@wordpress/api-fetch';
 import { formatCurrency, formatPercentage } from '../utils/formatters';
 
 /**
@@ -51,7 +51,21 @@ const Dashboard = () => {
       setError(null);
       
       try {
-        const data = await fetchDashboardData(period, showComparison, dateRange);
+        const params = new URLSearchParams({
+          period,
+          compare: showComparison,
+        });
+
+        if (dateRange && dateRange.startDate && dateRange.endDate) {
+          params.append('start_date', dateRange.startDate);
+          params.append('end_date', dateRange.endDate);
+        }
+
+        const data = await apiFetch({
+          path: `${window.pktAdminData.restUrl}/dashboard?${params.toString()}`,
+          method: 'GET',
+        });
+
         setDashboardData(data);
       } catch (err) {
         setError('Failed to load dashboard data. Please try again later.');
