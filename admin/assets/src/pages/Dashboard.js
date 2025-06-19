@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '@brainstormforce/force-ui';
+import { Card } from '@bsf/force-ui';
 import { useKPI } from '../contexts/KPIContext';
 
 const Dashboard = () => {

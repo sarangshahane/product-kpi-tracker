@@ -35,6 +35,9 @@
                 "url": "https://github.com/codex/product-kpi-tracker/issues"
         },
         "homepage": "https://github.com/codex/product-kpi-tracker#readme",
+        "dependencies": {
+                "@bsf/force-ui": "git+https://github.com/brainstormforce/force-ui#1.7.4"
+        },
         "devDependencies": {
                 "@wordpress/scripts": "^21.0.1",
                 "grunt": "^1.4.1",
