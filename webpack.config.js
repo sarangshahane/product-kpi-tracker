@@ -46,8 +46,8 @@ module.exports = (env = {}, argv = {}) => {
                 sourceMap: !isProd,
                 postcssOptions: {
                   plugins: [
-                    require('tailwindcss'),
-                    require('autoprefixer'),
+                    'tailwindcss',
+                    'autoprefixer',
                   ],
                 },
               },
