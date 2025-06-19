@@ -6,12 +6,12 @@ module.exports = {
 		'no-alert': 'off',
 		'space-before-function-paren': 'off',
 		'no-mixed-spaces-and-tabs': 'off',
-		'@wordpress/i18n-text-domain': [
-			'error',
-			{
-				allowedTextDomain: 'wp-plugin-base',
-			},
-		],
+                '@wordpress/i18n-text-domain': [
+                        'error',
+                        {
+                                allowedTextDomain: 'product-kpi-tracker',
+                        },
+                ],
 	},
 	parserOptions: {
 		requireConfigFile: false,
