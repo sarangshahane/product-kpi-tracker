@@ -163,94 +163,98 @@ const Formulas = () => {
   };
 
   if (isLoading) {
-    return <div className="p-6">Loading formulas...</div>;
+    return (
+      <div className="pkt-flex pkt-justify-center pkt-items-center pkt-h-64">
+        <div className="pkt-text-lg pkt-text-gray-600">Loading formulas...</div>
+      </div>
+    );
   }
 
   if (isEditing) {
     return (
       <div className="pkt-admin-container">
         <Title text={currentFormula.id ? 'Edit Formula' : 'Add New Formula'} />
-        
-        <Card className="mb-6">
-          <div className="grid grid-cols-1 gap-4">
+
+        <Card className="pkt-mb-6">
+          <div className="pkt-grid pkt-grid-cols-1 pkt-gap-4">
             <div>
               <label className="pkt-label">Formula Name</label>
-              <Input 
-                value={currentFormula.name} 
-                onChange={(e) => handleFormulaChange('name', e.target.value)} 
+              <Input
+                value={currentFormula.name}
+                onChange={(e) => handleFormulaChange('name', e.target.value)}
                 placeholder="e.g., Gross Profit Margin"
               />
             </div>
-            
+
             <div>
               <label className="pkt-label">Formula Expression</label>
-              <Input 
-                value={currentFormula.formula} 
-                onChange={(e) => handleFormulaChange('formula', e.target.value)} 
+              <Input
+                value={currentFormula.formula}
+                onChange={(e) => handleFormulaChange('formula', e.target.value)}
                 placeholder="e.g., (Revenue - COGS) / Revenue * 100"
               />
             </div>
-            
+
             <div>
               <label className="pkt-label">Description</label>
-              <Input 
-                value={currentFormula.description} 
-                onChange={(e) => handleFormulaChange('description', e.target.value)} 
+              <Input
+                value={currentFormula.description}
+                onChange={(e) => handleFormulaChange('description', e.target.value)}
                 placeholder="Describe what this formula calculates"
               />
             </div>
-            
-            <div className="flex items-center">
-              <Toggle 
-                checked={currentFormula.isActive} 
-                onChange={(e) => handleFormulaChange('isActive', e.target.checked)} 
+
+            <div className="pkt-flex pkt-items-center">
+              <Toggle
+                checked={currentFormula.isActive}
+                onChange={(e) => handleFormulaChange('isActive', e.target.checked)}
               />
-              <span className="ml-2">Active</span>
+              <span className="pkt-ml-2">Active</span>
             </div>
           </div>
         </Card>
-        
+
         <Title text="Variables" level="h3" />
-        
-        <Card className="mb-6">
+
+        <Card className="pkt-mb-6">
           {currentFormula.variables.map((variable, index) => (
-            <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 pb-4 border-b border-gray-200 last:border-0">
+            <div key={index} className="pkt-grid pkt-grid-cols-1 md:pkt-grid-cols-3 pkt-gap-4 pkt-mb-4 pkt-pb-4 pkt-border-b pkt-border-gray-200 last:pkt-border-0">
               <div>
                 <label className="pkt-label">Variable Name</label>
-                <Input 
-                  value={variable.name} 
-                  onChange={(e) => handleVariableChange(index, 'name', e.target.value)} 
+                <Input
+                  value={variable.name}
+                  onChange={(e) => handleVariableChange(index, 'name', e.target.value)}
                   placeholder="e.g., Revenue"
                 />
               </div>
-              
+
               <div>
                 <label className="pkt-label">Data Source</label>
-                <Input 
-                  value={variable.source} 
-                  onChange={(e) => handleVariableChange(index, 'source', e.target.value)} 
+                <Input
+                  value={variable.source}
+                  onChange={(e) => handleVariableChange(index, 'source', e.target.value)}
                   placeholder="e.g., wc_order_stats.net_total"
                 />
               </div>
-              
-              <div className="flex items-end">
-                <Button 
-                  text="Remove" 
-                  variant="secondary" 
-                  onClick={() => removeVariable(index)} 
+
+              <div className="pkt-flex pkt-items-end">
+                <Button
+                  text="Remove"
+                  variant="secondary"
+                  onClick={() => removeVariable(index)}
                   disabled={currentFormula.variables.length <= 1}
                 />
               </div>
             </div>
           ))}
-          
-          <div className="mt-4">
+
+          <div className="pkt-mt-4">
             <Button text="Add Variable" variant="secondary" onClick={addVariable} />
           </div>
         </Card>
-        
-        <div className="flex justify-end">
-          <Button text="Cancel" variant="secondary" onClick={handleCancelEdit} className="mr-2" />
+
+        <div className="pkt-flex pkt-justify-end">
+          <Button text="Cancel" variant="secondary" onClick={handleCancelEdit} className="pkt-mr-2" />
           <Button text="Save Formula" onClick={handleSaveFormula} />
         </div>
       </div>
@@ -259,55 +263,55 @@ const Formulas = () => {
 
   return (
     <div className="pkt-admin-container">
-      <div className="flex justify-between items-center mb-6">
+      <div className="pkt-flex pkt-justify-between pkt-items-center pkt-mb-6">
         <Title text="KPI Formulas" />
         <Button text="Add New Formula" onClick={handleAddFormula} />
       </div>
-      
+
       {formulas.length === 0 ? (
         <Card>
-          <p className="text-center py-6">No formulas found. Click "Add New Formula" to create one.</p>
+          <p className="pkt-text-center pkt-py-6">No formulas found. Click "Add New Formula" to create one.</p>
         </Card>
       ) : (
         formulas.map(formula => (
-          <Card key={formula.id} className="mb-4">
-            <div className="flex justify-between items-start mb-2">
+          <Card key={formula.id} className="pkt-mb-4">
+            <div className="pkt-flex pkt-justify-between pkt-items-start pkt-mb-2">
               <div>
-                <h3 className="text-lg font-semibold">{formula.name}</h3>
-                <div className="text-sm text-gray-500 mb-2">{formula.description}</div>
+                <h3 className="pkt-text-lg pkt-font-semibold">{formula.name}</h3>
+                <div className="pkt-text-sm pkt-text-gray-500 pkt-mb-2">{formula.description}</div>
               </div>
-              <Toggle 
-                checked={formula.isActive} 
-                onChange={() => handleToggleActive(formula.id)} 
+              <Toggle
+                checked={formula.isActive}
+                onChange={() => handleToggleActive(formula.id)}
               />
             </div>
-            
-            <div className="bg-gray-50 p-3 rounded mb-4 font-mono text-sm">
+
+            <div className="pkt-bg-gray-50 pkt-p-3 pkt-rounded pkt-mb-4 pkt-font-mono pkt-text-sm">
               {formula.formula}
             </div>
-            
-            <div className="mb-4">
-              <h4 className="text-sm font-semibold mb-2">Variables:</h4>
-              <ul className="text-sm">
+
+            <div className="pkt-mb-4">
+              <h4 className="pkt-text-sm pkt-font-semibold pkt-mb-2">Variables:</h4>
+              <ul className="pkt-text-sm">
                 {formula.variables.map((variable, index) => (
-                  <li key={index} className="mb-1">
-                    <span className="font-medium">{variable.name}:</span> {variable.source}
+                  <li key={index} className="pkt-mb-1">
+                    <span className="pkt-font-medium">{variable.name}:</span> {variable.source}
                   </li>
                 ))}
               </ul>
             </div>
-            
-            <div className="flex justify-end">
-              <Button 
-                text="Edit" 
-                variant="secondary" 
-                onClick={() => handleEditFormula(formula)} 
-                className="mr-2"
+
+            <div className="pkt-flex pkt-justify-end">
+              <Button
+                text="Edit"
+                variant="secondary"
+                onClick={() => handleEditFormula(formula)}
+                className="pkt-mr-2"
               />
-              <Button 
-                text="Delete" 
-                variant="secondary" 
-                onClick={() => handleDeleteFormula(formula.id)} 
+              <Button
+                text="Delete"
+                variant="secondary"
+                onClick={() => handleDeleteFormula(formula.id)}
               />
             </div>
           </Card>

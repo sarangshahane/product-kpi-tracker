@@ -528,6 +528,9 @@ video {
 .pkt-mt-2 {
   margin-top: 0.5rem !important;
 }
+.pkt-mt-4 {
+  margin-top: 1rem !important;
+}
 .pkt-mt-8 {
   margin-top: 2rem !important;
 }
@@ -603,6 +606,9 @@ video {
 .pkt-min-w-\[200px\] {
   min-width: 200px !important;
 }
+.pkt-max-w-96 {
+  max-width: 24rem !important;
+}
 .pkt-flex-1 {
   flex: 1 1 0% !important;
 }
@@ -645,6 +651,12 @@ video {
 }
 .pkt-flex-col {
   flex-direction: column !important;
+}
+.pkt-items-start {
+  align-items: flex-start !important;
+}
+.pkt-items-end {
+  align-items: flex-end !important;
 }
 .pkt-items-center {
   align-items: center !important;
@@ -744,6 +756,10 @@ video {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1)) !important;
 }
+.pkt-bg-gray-50 {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1)) !important;
+}
 .pkt-bg-green-600 {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1)) !important;
@@ -759,6 +775,9 @@ video {
 .pkt-bg-white {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1)) !important;
+}
+.pkt-p-3 {
+  padding: 0.75rem !important;
 }
 .pkt-p-4 {
   padding: 1rem !important;
@@ -790,11 +809,17 @@ video {
   padding-top: 1.5rem !important;
   padding-bottom: 1.5rem !important;
 }
+.pkt-pb-4 {
+  padding-bottom: 1rem !important;
+}
 .pkt-text-left {
   text-align: right !important;
 }
 .pkt-text-center {
   text-align: center !important;
+}
+.pkt-font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
 }
 .pkt-text-2xl {
   font-size: 1.5rem !important;
@@ -1094,6 +1119,10 @@ video {
   color: rgb(185 28 28 / var(--tw-text-opacity, 1));
 }
 
+.last\:pkt-border-0:last-child {
+  border-width: 0px !important;
+}
+
 .hover\:pkt-bg-blue-700:hover {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1)) !important;
@@ -1145,6 +1174,9 @@ video {
 }
 
 @media (min-width: 768px) {
+  .md\:pkt-grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
   .md\:pkt-flex-row {
     flex-direction: row !important;
   }
