@@ -125,47 +125,47 @@ const Reports = () => {
     <div className="pkt-admin-container">
       <Title text="Generate Reports" />
       
-      <Card className="mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
+      <Card className="pkt-mb-6">
+        <div className="pkt-flex pkt-flex-col pkt-gap-4 pkt-max-w-96">
+          <div className='pkt-flex pkt-flex-col pkt-gap-2'>
             <label className="pkt-label">Report Type</label>
-            <Select 
-              options={reportTypes} 
-              value={reportType} 
-              onChange={handleReportTypeChange} 
+            <Select
+              options={reportTypes}
+              value={reportType}
+              onChange={handleReportTypeChange}
             />
           </div>
-          
-          <div>
+
+          <div className='pkt-flex pkt-flex-col pkt-gap-2'>
             <label className="pkt-label">Date Range</label>
-            <DateRangePicker 
-              startDate={dateRange.startDate} 
-              endDate={dateRange.endDate} 
-              onChange={handleDateRangeChange} 
+            <DateRangePicker
+              startDate={dateRange.startDate}
+              endDate={dateRange.endDate}
+              onChange={handleDateRangeChange}
             />
           </div>
-          
-          <div className="flex items-end">
-            <Button 
-              text="Generate Report" 
-              onClick={generateReport} 
-              isLoading={isLoading} 
+
+          <div className='pkt-flex pkt-flex-col pkt-gap-2'>
+            <Button
+              text="Generate Report"
+              onClick={generateReport}
+              isLoading={isLoading}
             />
           </div>
         </div>
       </Card>
-      
+
       {reportData.length > 0 && (
         <div>
           <Title text={reportTypes.find(r => r.value === reportType).label} level="h3" />
-          
+
           <Table
             headers={getReportHeaders()}
             data={getReportRows()}
           />
-          
-          <div className="flex justify-end mt-4">
-            <Button text="Export CSV" variant="secondary" className="mr-2" />
+
+          <div className="pkt-flex pkt-justify-end pkt-mt-4">
+            <Button text="Export CSV" variant="secondary" className="pkt-mr-2" />
             <Button text="Export PDF" variant="secondary" />
           </div>
         </div>
