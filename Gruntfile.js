@@ -32,6 +32,7 @@ module.exports = function ( grunt ) {
 					'!config/**',
 					'!tests/**',
 					'!bin/**',
+					'!.claude/**',
 				],
 				dest: 'wp-plugin-base/',
 			},

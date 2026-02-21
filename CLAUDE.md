@@ -105,3 +105,18 @@ admin-core/src/
 ## Requirements
 
 - WordPress 5.6+, WooCommerce 5.0+, PHP 7.4+
+
+## Current Focus
+<!-- Update this each sprint so agents know what's in progress -->
+- Replacing mock API data in `includes/class-api.php` with real WooCommerce queries
+
+## Known Gotchas
+- **Mock data**: All REST endpoints in `includes/class-api.php` return hardcoded data. Real WooCommerce queries are not yet wired.
+- **Tailwind prefix**: All utility classes use the `pkt-` prefix (e.g., `pkt-flex`, `pkt-text-sm`). Do not mix with unprefixed classes.
+- **Webpack aliases**: `@Admin`, `@Components`, `@Fields`, `@Pages`, `@Utils` are configured in `webpack.config.js` only — not in Jest. Add `moduleNameMapper` to `jest.config.js` if writing unit tests that import via these aliases.
+- **`settings.local.json`** is gitignored — each developer maintains their own local overrides in `.claude/settings.local.json`.
+
+## Team Conventions
+- Commit prefix: `:hammer:` refactor, `:pencil:` docs, `:bug:` fix, `:sparkles:` feature
+- Branch naming: `feature/<slug>`, `fix/<slug>`
+- PR target: `master` branch
