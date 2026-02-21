@@ -8,6 +8,8 @@
 
 namespace PKT;
 
+use PKT\AdminCore\Api\ApiInit;
+
 /**
  * Plugin_Loader
  *
@@ -75,6 +77,82 @@ class Plugin_Loader {
 		spl_autoload_register( [ $this, 'autoload' ] );
 
 		add_action( 'plugins_loaded', [ $this, 'load_textdomain' ] );
+
+		$this->define_constants();
+		$this->setup_classes();
+	}
+
+	/**
+	 * Define additional plugin constants.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function define_constants() {
+		define( 'PKT_ADMIN_CORE_DIR', PKT_DIR . 'admin-core/' );
+		define( 'PKT_ADMIN_CORE_URL', PKT_URL . 'admin-core/' );
+	}
+
+	/**
+	 * Load required classes and boot the API.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function setup_classes() {
+		require_once PKT_DIR . 'includes/class-data-source.php';
+		require_once PKT_DIR . 'includes/class-kpi-helper.php';
+		require_once PKT_DIR . 'includes/class-formula-engine.php';
+		require_once PKT_DIR . 'includes/class-admin.php';
+
+		// Boot the REST API (registered on rest_api_init hook inside ApiInit).
+		ApiInit::get_instance();
+
+		// Register nightly cache rebuild cron callback.
+		add_action( 'pkt_nightly_sync', array( $this, 'rebuild_kpi_cache' ) );
+
+		// Register weekly email cron callback (AD-9).
+		// class-email.php is loaded lazily here because WC_Email may not exist yet
+		// at plugin load time. Loading it inside the closure guarantees WooCommerce
+		// is fully initialised before the class declaration is executed.
+		add_action(
+			'pkt_weekly_email',
+			function () {
+				require_once PKT_DIR . 'includes/class-email.php';
+				\PKT\PKT_Weekly_Report_Email::send_report();
+			}
+		);
+
+		// Register custom WC email class so WooCommerce includes it in its mailer.
+		add_filter( 'woocommerce_email_classes', array( $this, 'register_email_classes' ) );
+	}
+
+	/**
+	 * Register our custom WC_Email subclass with WooCommerce's mailer.
+	 *
+	 * @param array $email_classes Existing WC email classes.
+	 * @return array
+	 */
+	public function register_email_classes( $email_classes ) {
+		// Load lazily: woocommerce_email_classes fires after WC is fully loaded,
+		// so WC_Email is guaranteed to exist at this point.
+		require_once PKT_DIR . 'includes/class-email.php';
+		$email_classes['PKT_Weekly_Report'] = new \PKT\PKT_Weekly_Report_Email();
+		return $email_classes;
+	}
+
+	/**
+	 * Rebuild KPI cache for all periods (called by nightly cron).
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function rebuild_kpi_cache() {
+		require_once PKT_DIR . 'admin-core/api/sync-api.php';
+		$data_source = \PKT\Data_Source::get_active_source();
+		foreach ( array( 'daily', 'weekly', 'monthly' ) as $period ) {
+			\PKT\AdminCore\Api\SyncApi::rebuild_cache_for_period( $period, $data_source );
+		}
 	}
 
 	/**

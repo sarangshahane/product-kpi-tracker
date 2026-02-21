@@ -7,83 +7,127 @@
 
 /* Custom styles with Tailwind prefix to avoid conflicts */
 .pkt-dashboard h1 {
-    @apply pkt-text-2xl pkt-font-bold pkt-mb-6;
+	@apply pkt-text-2xl pkt-font-bold pkt-mb-6;
 }
 
 .pkt-dashboard h2 {
-    @apply pkt-text-xl pkt-font-semibold pkt-mb-4;
+	@apply pkt-text-xl pkt-font-semibold pkt-mb-4;
 }
 
 .pkt-dashboard h3 {
-    @apply pkt-text-lg pkt-font-medium pkt-mb-3;
+	@apply pkt-text-lg pkt-font-medium pkt-mb-3;
 }
 
 /* Accessibility focus styles */
 .pkt-focus-visible:focus-visible {
-    @apply pkt-outline-none pkt-ring-2 pkt-ring-blue-500 pkt-ring-offset-2;
+	@apply pkt-outline-none pkt-ring-2 pkt-ring-blue-500 pkt-ring-offset-2;
 }
 
 /* Stat card styles */
 .pkt-stat-card {
-    @apply pkt-bg-white pkt-rounded-lg pkt-shadow pkt-p-6 pkt-flex pkt-flex-col;
+	@apply pkt-bg-white pkt-rounded-lg pkt-shadow pkt-p-6 pkt-flex pkt-flex-col;
 }
 
 .pkt-stat-label {
-    @apply pkt-text-gray-500 pkt-text-sm pkt-font-medium pkt-mb-2;
+	@apply pkt-text-gray-500 pkt-text-sm pkt-font-medium pkt-mb-2;
 }
 
 .pkt-stat-value {
-    @apply pkt-text-3xl pkt-font-bold;
+	@apply pkt-text-3xl pkt-font-bold;
 }
 
 /* Trend indicators */
 .pkt-trend-up {
-    @apply pkt-text-green-600;
+	@apply pkt-text-green-600;
 }
 
 .pkt-trend-down {
-    @apply pkt-text-red-600;
+	@apply pkt-text-red-600;
 }
 
 .pkt-trend-neutral {
-    @apply pkt-text-gray-600;
+	@apply pkt-text-gray-600;
 }
 
 /* Chart container */
 .pkt-chart-container {
-    @apply pkt-bg-white pkt-rounded-lg pkt-shadow pkt-p-6 pkt-h-[400px];
+	@apply pkt-bg-white pkt-rounded-lg pkt-shadow pkt-p-6 pkt-h-[400px];
 }
 
 /* Responsive adjustments */
-@media (max-width: 640px) {
-    .pkt-stat-value {
-        @apply pkt-text-2xl;
-    }
-    
-    .pkt-chart-container {
-        @apply pkt-h-[300px];
-    }
+@media ( max-width: 640px ) {
+	.pkt-stat-value {
+		@apply pkt-text-2xl;
+	}
+
+	.pkt-chart-container {
+		@apply pkt-h-[300px];
+	}
 }
 
 /* Screen reader text */
 .pkt-sr-only {
-    @apply pkt-absolute pkt-w-px pkt-h-px pkt-p-0 pkt-m-[-1px] pkt-overflow-hidden pkt-whitespace-nowrap pkt-border-0;
+	@apply pkt-absolute pkt-w-px pkt-h-px pkt-p-0 pkt-m-[-1px] pkt-overflow-hidden pkt-whitespace-nowrap pkt-border-0;
 }
 
 /* Loading state */
 .pkt-loading {
-    @apply pkt-flex pkt-justify-center pkt-items-center pkt-h-64;
+	@apply pkt-flex pkt-justify-center pkt-items-center pkt-h-64;
 }
 
 .pkt-loading-text {
-    @apply pkt-text-lg pkt-text-gray-600;
+	@apply pkt-text-lg pkt-text-gray-600;
 }
 
 /* Error state */
 .pkt-error {
-    @apply pkt-bg-red-50 pkt-border pkt-border-red-200 pkt-rounded-md pkt-p-4 pkt-my-4;
+	@apply pkt-bg-red-50 pkt-border pkt-border-red-200 pkt-rounded-md pkt-p-4 pkt-my-4;
 }
 
 .pkt-error-text {
-    @apply pkt-text-red-700 pkt-text-sm;
+	@apply pkt-text-red-700 pkt-text-sm;
+}
+
+/* Print styles (AD-7) */
+.pkt-print-only {
+	display: none;
+}
+
+@media print {
+	/* Hide all WordPress admin chrome and plugin toolbar buttons */
+	#wpwrap,
+	#wpadminbar,
+	#adminmenuwrap,
+	#adminmenuback,
+	#wpfooter,
+	.pkt-print-hide {
+		display: none !important;
+	}
+
+	/* Show the summary panel injected by PrintableReport */
+	.pkt-print-only {
+		display: block !important;
+	}
+
+	/* Ensure charts rendered as <img> fill the column */
+	.pkt-dashboard canvas {
+		display: none !important;
+	}
+
+	.pkt-dashboard img[src^="data:image/png"] {
+		max-width: 100% !important;
+		height: auto !important;
+	}
+
+	/* Reset page background for clean print output */
+	body {
+		background: #fff !important;
+		color: #000 !important;
+	}
+
+	/* Avoid breaking stat cards across pages */
+	.pkt-stat-card {
+		break-inside: avoid;
+		page-break-inside: avoid;
+	}
 }

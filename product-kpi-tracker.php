@@ -22,8 +22,34 @@ define( 'PKT_VER', '1.0.0' );
 
 require_once 'plugin-loader.php';
 
-// Include admin class if in admin area
-if ( is_admin() ) {
-    require_once PKT_DIR . 'includes/class-admin.php';
-    require_once PKT_DIR . 'includes/class-api.php';
+/**
+ * Plugin activation: schedule nightly KPI cache rebuild and weekly email report.
+ */
+function pkt_activate() {
+	if ( ! wp_next_scheduled( 'pkt_nightly_sync' ) ) {
+		wp_schedule_event(
+			strtotime( 'tomorrow midnight' ),
+			'daily',
+			'pkt_nightly_sync'
+		);
+	}
+
+	// Schedule weekly email every Monday at 08:00 site time (AD-9).
+	if ( ! wp_next_scheduled( 'pkt_weekly_email' ) ) {
+		wp_schedule_event(
+			strtotime( 'next monday 08:00' ),
+			'weekly',
+			'pkt_weekly_email'
+		);
+	}
 }
+register_activation_hook( PKT_FILE, 'pkt_activate' );
+
+/**
+ * Plugin deactivation: remove cron events.
+ */
+function pkt_deactivate() {
+	wp_clear_scheduled_hook( 'pkt_nightly_sync' );
+	wp_clear_scheduled_hook( 'pkt_weekly_email' );
+}
+register_deactivation_hook( PKT_FILE, 'pkt_deactivate' );
