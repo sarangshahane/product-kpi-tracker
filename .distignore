@@ -54,3 +54,4 @@ webpack.config.js
 scripts
 artifact
 artifacts
+.claude/

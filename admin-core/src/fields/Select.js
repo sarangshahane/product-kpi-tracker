@@ -7,7 +7,7 @@ const Select = ({
   className = '',
   disabled = false
 }) => {
-  const classes = `pkt-input ${className}`;
+  const classes = `pkt-input !flex !space-x-2 ${className}`;
   
   return (
     <select
