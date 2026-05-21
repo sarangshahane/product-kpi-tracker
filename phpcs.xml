@@ -34,9 +34,9 @@
 
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array">
-				<element value="wp-plugin-base"/>
-			</property>
+                        <property name="text_domain" type="array">
+                                <element value="product-kpi-tracker"/>
+                        </property>
 		</properties>
 	</rule>
 

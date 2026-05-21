@@ -33,24 +33,24 @@ module.exports = function ( grunt ) {
 					'!tests/**',
 					'!bin/**',
 				],
-				dest: 'wp-plugin-base/',
+                                dest: 'product-kpi-tracker/',
 			},
 		},
 		compress: {
 			main: {
 				options: {
-					archive: 'wp-plugin-base-<%= pkg.version %>.zip',
+                                        archive: 'product-kpi-tracker-<%= pkg.version %>.zip',
 					mode: 'zip',
 				},
 				files: [
 					{
-						src: [ './wp-plugin-base/**' ],
+                                                src: [ './product-kpi-tracker/**' ],
 					},
 				],
 			},
 		},
 		clean: {
-			main: [ 'wp-plugin-base' ],
+                        main: [ 'product-kpi-tracker' ],
 			zip: [ '*.zip' ],
 		},
 	} );
