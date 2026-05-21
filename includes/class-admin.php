@@ -139,7 +139,7 @@ class Admin {
 			'pktAdminData',
 			array(
 				'adminUrl'   => admin_url( 'admin.php?page=product-kpi-tracker' ),
-				'restUrl'    => rest_url( 'product-kpi-tracker/v1' ),
+				'restUrl'    => rest_url( 'pkt/v1' ),
 				'nonce'      => wp_create_nonce( 'wp_rest' ),
 				'pluginUrl'  => PKT_URL,
 				'pluginPath' => PKT_DIR,
