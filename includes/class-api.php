@@ -8,6 +8,10 @@
 
 namespace PKT;
 
+use PKT\KPI_Helper;
+
+require_once PKT_DIR . 'includes/class-kpi-helper.php';
+
 /**
  * API class to handle REST API endpoints
  */
@@ -160,38 +164,31 @@ class API {
 		$start_date = $request->get_param( 'start_date' );
 		$end_date = $request->get_param( 'end_date' );
 		
-		// In a real implementation, this would fetch data from WooCommerce orders
-		// and calculate the KPIs based on actual order data
-		
-		// For demonstration purposes, we'll return mock data
-		$data = array(
-			'stats' => array(
-				'netRevenue'      => 125750.50,
-				'mrr'             => 15250.75,
-				'arps'            => 49.99,
-				'aov'             => 85.25,
-				'churnRate'       => 3.2,
-				'refundRate'      => 1.8,
-				'abandonmentRate' => 68.5,
-			),
-			'trends' => $this->get_trend_data( $period ),
-		);
-		
-		// Add previous period data for comparison if requested
-		if ( $compare_previous ) {
-			$data['previous'] = array(
-				'stats' => array(
-					'netRevenue'      => 118250.25,
-					'mrr'             => 14750.50,
-					'arps'            => 47.50,
-					'aov'             => 82.75,
-					'churnRate'       => 3.5,
-					'refundRate'      => 2.1,
-					'abandonmentRate' => 71.2,
-				),
-				'trends' => $this->get_trend_data( $period, true ),
-			);
-		}
+               $start = $start_date ? new \DateTime( $start_date ) : new \DateTime( '-30 days' );
+               $end   = $end_date ? new \DateTime( $end_date ) : new \DateTime();
+
+               $interval      = $end->diff( $start );
+               $prev_end      = ( clone $start )->modify( '-1 second' );
+               $prev_start    = ( clone $prev_end )->sub( $interval );
+               $pre_prev_end  = ( clone $prev_start )->modify( '-1 second' );
+               $pre_prev_start= ( clone $pre_prev_end )->sub( $interval );
+
+               $pre_previous = \PKT\KPI_Helper::calculate_period_kpis( $pre_prev_start, $pre_prev_end );
+               $previous     = \PKT\KPI_Helper::calculate_period_kpis( $prev_start, $prev_end, $pre_previous['customers'] );
+               $current      = \PKT\KPI_Helper::calculate_period_kpis( $start, $end, $previous['customers'] );
+
+               $data = array(
+                       'stats'  => $current['stats'],
+                       'trends' => \PKT\KPI_Helper::get_trend_data( $period, $start, $end ),
+               );
+
+               // Add previous period data for comparison if requested
+               if ( $compare_previous ) {
+                       $data['previous'] = array(
+                               'stats'  => $previous['stats'],
+                               'trends' => \PKT\KPI_Helper::get_trend_data( $period, $prev_start, $prev_end ),
+                       );
+               }
 
 		return rest_ensure_response( $data );
 	}
@@ -204,168 +201,8 @@ class API {
 	 * @param bool   $is_previous Whether this is data for the previous period.
 	 * @return array
 	 */
-	private function get_trend_data( $period, $is_previous = false ) {
-		$trends = array(
-			'netRevenue'  => array(),
-			'aov'         => array(),
-			'churnRate'   => array(),
-			'refundRate'  => array(),
-		);
-		
-		// Generate labels based on period
-		$labels = $this->generate_time_labels( $period, $is_previous );
-		
-		// Generate mock data for each metric
-		foreach ( $trends as $metric => &$data ) {
-			$data = array(
-				'labels' => $labels,
-				'values' => $this->generate_mock_values( count( $labels ), $metric, $is_previous ),
-			);
-		}
-		
-		return $trends;
-	}
-	
-	/**
-	 * Generate time labels based on period
-	 *
-	 * @since 1.0.0
-	 * @param string $period Time period (daily, weekly, monthly).
-	 * @param bool   $is_previous Whether this is for the previous period.
-	 * @return array
-	 */
-	private function generate_time_labels( $period, $is_previous = false ) {
-		$labels = array();
-		$today = new \DateTime();
-		
-		// For previous period, adjust the starting point
-		if ( $is_previous ) {
-			switch ( $period ) {
-				case 'daily':
-					$today->modify( '-14 days' ); // Previous 14 days before the current period
-					break;
-				case 'weekly':
-					$today->modify( '-12 weeks' ); // Previous 12 weeks before the current period
-					break;
-				case 'monthly':
-				default:
-					$today->modify( '-12 months' ); // Previous 12 months before the current period
-					break;
-			}
-		}
-		
-		switch ( $period ) {
-			case 'daily':
-				// Last 14 days
-				for ( $i = 13; $i >= 0; $i-- ) {
-					$date = clone $today;
-					$date->modify( "-$i days" );
-					$labels[] = $date->format( 'M j' );
-				}
-				break;
-				
-			case 'weekly':
-				// Last 12 weeks
-				for ( $i = 11; $i >= 0; $i-- ) {
-					$date = clone $today;
-					$date->modify( "-$i weeks" );
-					$week_start = clone $date;
-					$week_start->modify( 'monday this week' );
-					$week_end = clone $week_start;
-					$week_end->modify( '+6 days' );
-					$labels[] = $week_start->format( 'M j' ) . ' - ' . $week_end->format( 'M j' );
-				}
-				break;
-				
-			case 'monthly':
-			default:
-				// Last 12 months
-				for ( $i = 11; $i >= 0; $i-- ) {
-					$date = clone $today;
-					$date->modify( "-$i months" );
-					$labels[] = $date->format( 'M Y' );
-				}
-				break;
-		}
-		
-		return $labels;
-	}
-	
-	/**
-	 * Generate mock values for charts
-	 *
-	 * @since 1.0.0
-	 * @param int    $count Number of values to generate.
-	 * @param string $metric Metric type.
-	 * @param bool   $is_previous Whether this is for the previous period.
-	 * @return array
-	 */
-	private function generate_mock_values( $count, $metric, $is_previous = false ) {
-		$values = array();
-		
-		// Set base values and variation ranges for different metrics
-		// For previous period, reduce the base values slightly
-		$adjustment_factor = $is_previous ? 0.9 : 1.0;
-		
-		switch ( $metric ) {
-			case 'netRevenue':
-				$base = 10000 * $adjustment_factor;
-				$min_variation = -1500;
-				$max_variation = 2000;
-				break;
-				
-			case 'aov':
-				$base = 85 * $adjustment_factor;
-				$min_variation = -10;
-				$max_variation = 15;
-				break;
-				
-			case 'churnRate':
-				$base = 3 * (2 - $adjustment_factor); // Inverse adjustment for churn (higher in previous period)
-				$min_variation = -0.5;
-				$max_variation = 1;
-				break;
-				
-			case 'refundRate':
-				$base = 1.8 * (2 - $adjustment_factor); // Inverse adjustment for refund rate
-				$min_variation = -0.3;
-				$max_variation = 0.7;
-				break;
-				
-			default:
-				$base = 100 * $adjustment_factor;
-				$min_variation = -20;
-				$max_variation = 30;
-		}
-		
-		// Generate values with some randomness but also a trend
-		$trend_factor = 1.0;
-		for ( $i = 0; $i < $count; $i++ ) {
-			$variation = $min_variation + ( mt_rand() / mt_getrandmax() ) * ( $max_variation - $min_variation );
-			$trend_adjustment = $i * ( mt_rand( -10, 15 ) / 100 ); // Small trend adjustment
-			
-			$value = max( 0, ( $base + $variation ) * $trend_factor + $trend_adjustment );
-			
-			// Format based on metric type
-			if ( in_array( $metric, array( 'churnRate', 'refundRate' ), true ) ) {
-				$value = round( $value, 2 ); // 2 decimal places for rates
-			} else if ( $metric === 'aov' ) {
-				$value = round( $value, 2 ); // 2 decimal places for AOV
-			} else {
-				$value = round( $value, 0 ); // Whole numbers for revenue
-			}
-			
-			$values[] = $value;
-			
-			// Adjust trend factor slightly for next iteration
-			$trend_factor *= ( 1 + ( mt_rand( -5, 8 ) / 1000 ) );
-		}
-		
-		return $values;
-	}
-
-	/**
-	 * Get reports data
+       /**
+        * Get reports data
 	 *
 	 * @since 1.0.0
 	 * @param \WP_REST_Request $request Request object.
